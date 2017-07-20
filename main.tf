@@ -15,7 +15,7 @@ provider "aws" {
 resource "aws_vpc_peering_connection" "request" {
   provider                          = "aws.dest"
 
-  auto_accept                       = "false"
+  auto_accept                       = "true"
   peer_owner_id                     = "${var.vpc_dest["account_id"]}"
   peer_vpc_id                       = "${var.vpc_dest["vpc_id"]}"
   vpc_id                            = "${var.vpc_source["vpc_id"]}"
