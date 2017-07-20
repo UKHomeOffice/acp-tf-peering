@@ -20,13 +20,13 @@ resource "aws_vpc_peering_connection" "request" {
   peer_vpc_id                       = "${var.vpc_dest["vpc_id"]}"
   vpc_id                            = "${var.vpc_source["vpc_id"]}"
 
-  accepter {
-    allow_remote_vpc_dns_resolution = true
-  }
-
-  requester {
-    allow_remote_vpc_dns_resolution = true
-  }
+#  accepter {
+#    allow_remote_vpc_dns_resolution = true
+#  }
+#
+#  requester {
+#    allow_remote_vpc_dns_resolution = true
+#  }
 
   tags = "${merge(var.tags, map("Name", format("%s - %s", var.vpc_source["name"], var.vpc_dest["name"])))}"
 }
