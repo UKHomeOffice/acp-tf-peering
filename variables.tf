@@ -9,7 +9,7 @@ variable "vpc_source" {
   type        = "map"
 }
 
-variable "vpn_dest" {
+variable "vpc_dest" {
   description = "A destination map containing the keys, vpc_id, account_id and name"
   type        = "map"
 }
