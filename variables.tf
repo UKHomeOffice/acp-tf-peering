@@ -1,7 +1,12 @@
 
-variable "tags" {
-  description = "A map of tags applied the vpc peering connections"
-  default     = {}
+variable "source_tables" {
+  description = "A list of routing tables id for the source VPC"
+  default     = []
+}
+
+variable "dest_tables" {
+  description = "A list of routing tables id for the destination VPC"
+  default     = []
 }
 
 variable "vpc_source" {

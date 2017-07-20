@@ -20,7 +20,9 @@ resource "aws_vpc_peering_connection" "request" {
   peer_vpc_id                       = "${var.vpc_dest["vpc_id"]}"
   vpc_id                            = "${var.vpc_source["vpc_id"]}"
 
-  tags = "${merge(var.tags, map("Name", format("%s - %s", var.vpc_source["name"], var.vpc_dest["name"])))}"
+  tags = {
+    Name = "${format("%s - %s", var.vpc_source["name"], var.vpc_dest["name"])}"
+  }
 }
 
 ## Accept the VPC connection on the other end
@@ -30,6 +32,30 @@ resource "aws_vpc_peering_connection_accepter" "accept" {
   auto_accept                       = true
   vpc_peering_connection_id         = "${aws_vpc_peering_connection.request.id}"
 
-  tags = "${merge(var.tags, map("Name", format("%s - %s", var.vpc_dest["name"], var.vpc_source["name"])))}"
+  tags = {
+    Name = "${format("%s - %s", var.vpc_dest["name"], var.vpc_source["name"])}"
+  }
+}
+
+## Add routing to the source VPC
+resource "aws_route" "source_routes" {
+  count                     = "${length(var.source_tables)}"
+  depends_on                = [ "aws_vpc_peering_connection_accepter.accept", "aws_vpc_peering_connection.request" ]
+  provider                  = "aws.source"
+
+  destination_cidr_block    = "${var.vpc_dest["vpc_cidr"]}"
+  route_table_id            = "${var.source_tables[count.index]}"
+  vpc_peering_connection_id = "${aws_vpc_peering_connection.request.id}"
+}
+
+## Add routing to the destination VPC
+resource "aws_route" "dest_routes" {
+  count                     = "${length(var.dest_tables)}"
+  depends_on                = [ "aws_vpc_peering_connection_accepter.accept", "aws_vpc_peering_connection.request" ]
+  provider                  = "aws.dest"
+
+  destination_cidr_block    = "${var.vpc_source["vpc_cidr"]}"
+  route_table_id            = "${var.dest_tables[count.index]}"
+  vpc_peering_connection_id = "${aws_vpc_peering_connection.request.id}"
 }
 
