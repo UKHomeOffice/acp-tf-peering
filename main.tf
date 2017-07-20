@@ -36,7 +36,7 @@ resource "aws_vpc_peering_connection_accepter" "accept" {
   provider                          = "aws.source"
 
   auto_accept                       = true
-  vpc_peering_connection_id         = "${aws_vpc_peering_connection.test-access.id}"
+  vpc_peering_connection_id         = "${aws_vpc_peering_connection.request.id}"
 
   tags = "${merge(var.tags, map("Name", format("%s - %s", var.vpc_dest["name"], var.vpc_source["name"])))}"
 }
