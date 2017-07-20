@@ -13,7 +13,7 @@ provider "aws" {
 
 ## Request a peering connection from destination to source
 resource "aws_vpc_peering_connection" "request" {
-  provider                          = "${aws.dest}"
+  provider                          = "aws.dest"
 
   auto_accept                       = "false"
   peer_owner_id                     = "${var.vpc_dest["account_id"]}"
