@@ -1,15 +1,3 @@
-## The source provider
-provider "aws" {
-  alias   = "source"
-  profile = "${var.vpc_source["name"]}"
-}
-
-## The destination provider
-provider "aws" {
-  alias   = "dest"
-  profile = "${var.vpc_dest["name"]}"
-}
-
 ## Request a peering connection from destination to source
 resource "aws_vpc_peering_connection" "request" {
   provider = "aws.source"
