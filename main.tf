@@ -1,3 +1,13 @@
+# AWS Source Provider
+provider "aws" {
+  alias = "source"
+}
+
+# AWS Destination Provider
+provider "aws" {
+  alias = "dest"
+}
+
 ## Request a peering connection from destination to source
 resource "aws_vpc_peering_connection" "request" {
   provider = "aws.source"
