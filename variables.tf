@@ -1,10 +1,20 @@
-variable "source_tables" {
-  description = "A list of routing tables id for the source VPC"
-  default     = []
+variable "auto_accept" {
+  description = "Indicated we should attempt to accept on the peering side"
+  default     = false
+}
+
+variable "peer_region" {
+  description = "The peering region if we are going across region"
+  default     = ""
 }
 
 variable "dest_tables" {
   description = "A list of routing tables id for the destination VPC"
+  default     = []
+}
+
+variable "source_tables" {
+  description = "A list of routing tables id for the source VPC"
   default     = []
 }
 
