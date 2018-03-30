@@ -12,8 +12,9 @@ provider "aws" {
 resource "aws_vpc_peering_connection" "request" {
   provider = "aws.source"
 
-  auto_accept   = "${var.vpc_source["account_id"] != var.vpc_dest["account_id"] ? false : true}"
+  auto_accept   = "${var.auto_accept}"
   peer_owner_id = "${var.vpc_dest["account_id"]}"
+  peer_region   = "${var.peer_region}"
   peer_vpc_id   = "${var.vpc_dest["vpc_id"]}"
   vpc_id        = "${var.vpc_source["vpc_id"]}"
 
@@ -24,7 +25,7 @@ resource "aws_vpc_peering_connection" "request" {
 
 ## Accept the VPC connection on the other end
 resource "aws_vpc_peering_connection_accepter" "accept" {
-  count    = "${var.vpc_source["account_id"] != var.vpc_dest["account_id"] ? 1 : 0}"
+  count    = "${var.auto_accept ? 1 : 0}"
   provider = "aws.dest"
 
   auto_accept               = true
