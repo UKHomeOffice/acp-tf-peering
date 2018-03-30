@@ -25,7 +25,7 @@ resource "aws_vpc_peering_connection" "request" {
 
 ## Accept the VPC connection on the other end
 resource "aws_vpc_peering_connection_accepter" "accept" {
-  count    = "${var.auto_accept ? 1 : 0}"
+  count    = "${var.auto_accept ? 0 : 1}"
   provider = "aws.dest"
 
   auto_accept               = true
