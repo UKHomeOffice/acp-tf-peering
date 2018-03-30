@@ -1,6 +1,6 @@
 variable "auto_accept" {
   description = "Indicated we should attempt to accept on the peering side"
-  default     = true
+  default     = false
 }
 
 variable "peer_region" {
