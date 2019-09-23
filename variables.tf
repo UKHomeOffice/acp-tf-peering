@@ -20,10 +20,11 @@ variable "source_tables" {
 
 variable "vpc_source" {
   description = "A source map containing the keys, vpc_id, account_id and name"
-  type        = "map"
+  type        = map(string)
 }
 
 variable "vpc_dest" {
   description = "A destination map containing the keys, vpc_id, account_id and name"
-  type        = "map"
+  type        = map(string)
 }
+
