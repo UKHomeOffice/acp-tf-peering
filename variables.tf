@@ -11,11 +11,13 @@ variable "peer_region" {
 variable "dest_tables" {
   description = "A list of routing tables id for the destination VPC"
   default     = []
+  type        = list(string)
 }
 
 variable "source_tables" {
   description = "A list of routing tables id for the source VPC"
   default     = []
+  type        = list(string)
 }
 
 variable "vpc_source" {
