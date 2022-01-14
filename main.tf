@@ -6,17 +6,7 @@ terraform {
       configuration_aliases = [aws.source, aws.dest]
     }
   }
-  required_version = ">=1.0"
-}
-
-# AWS Source Provider
-provider "aws" {
-  alias = "source"
-}
-
-# AWS Destination Provider
-provider "aws" {
-  alias = "dest"
+  required_version = ">= 1.0"
 }
 
 ## Request a peering connection from destination to source

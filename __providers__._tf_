@@ -1,0 +1,15 @@
+# Do not delete this file without understanding the consequences
+#
+# It is required for successfully validating the module
+# By acting as a root module specifying the providers to use
+# See the Drone pipeline for how this file is used
+
+# AWS Source Provider
+provider "aws" {
+  alias = "source"
+}
+
+# AWS Destination Provider
+provider "aws" {
+  alias = "dest"
+}
