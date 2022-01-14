@@ -1,3 +1,14 @@
+terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~> 3.70"
+      configuration_aliases = [aws.source, aws.dest]
+    }
+  }
+  required_version = ">=1.0"
+}
+
 # AWS Source Provider
 provider "aws" {
   alias = "source"
