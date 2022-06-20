@@ -1,3 +1,80 @@
+/**
+* ## Usage
+* ---
+*
+* ### Peering with same source and destination accounts
+*
+* In the providers block, you may use any of the prescribed providers from the parent 
+* module which is calling this module.  In this example, I have used the same provider
+* which was from the acp_test_resources repo.
+*
+* ```yaml
+* 
+* module "peering_example" {
+*   source = "git::https://github.com/UKHomeOffice/acp-tf-peering?ref=v1.0.2"
+* 
+*   providers = {
+*     aws.source = aws.eu-west-2
+*     aws.dest   = aws.eu-west-2
+*   }
+* 
+*   auto_accept = true
+* 
+*   vpc_source = {
+*     vpc_id     = "vpc-******"
+*     account_id = "******"
+*     name       = "******"
+*     vpc_cidr   = "******"
+*   }
+* 
+*   vpc_dest = {
+*     vpc_id     = "vpc-******"
+*     account_id = "******"
+*     name       = "******"
+*     vpc_cidr   = "******"
+*   }
+* }
+* 
+* ```
+* 
+* ### Peering between source and destination in different accounts
+*
+* When you need to peer between VPCs in different accounts, you can
+* use the providers block to select different providers as stated in the parent
+* modules variables that is calling this module.
+*
+* ```yaml
+* module "peer_acp_ci_to_acp_ops" {
+*   source = "git::https://github.com/UKHomeOffice/acp-tf-peering.git?ref=v1.0.2"
+* 
+*   providers = {
+*     aws.source = aws.acp-ci
+*     aws.dest   = aws.acp-ops
+*   }
+* 
+*   vpc_source = {
+*     name       = "acp-ci"
+*     account_id = data.terraform_remote_state.acp-ci.outputs.account_id
+*     vpc_cidr   = data.terraform_remote_state.acp-ci.outputs.vpc_cidr
+*     vpc_id     = data.terraform_remote_state.acp-ci.outputs.vpc_id
+*   }
+* 
+*   vpc_dest = {
+*     name       = "acp-ops"
+*     account_id = var.acp_ops["account_id"]
+*     vpc_cidr   = var.acp_ops["vpc_cidr"]
+*     vpc_id     = var.acp_ops["vpc_id"]
+*   }
+* 
+*   source_tables = concat(values(data.terraform_remote_state.acp-ci.outputs.zone_gws), [data.terraform_remote_state.acp-ci.outputs.default_gw])
+* 
+*   dest_tables = split(",", var.acp_ops["route_table_ids"])
+* 
+* }
+* 
+* ```
+*/
+
 terraform {
   required_providers {
     aws = {
@@ -64,4 +141,3 @@ resource "aws_route" "dest_routes" {
   route_table_id            = var.dest_tables[count.index]
   vpc_peering_connection_id = aws_vpc_peering_connection.request.id
 }
-
